@@ -8,28 +8,33 @@ class World:
         self.items = []
         self.app = app
         self.last_index = 0
-        self.dragons = 0
         self.dragon = Dragon
         self.heart = Heart
         self.pre_load_dragons = []
         self.pre_load_hearts = []
-        self.hearts = 0
+        self.pre_loading = False
 
     def on_ready(self):
-        for i in range(20):
+        for i in range(50):
             self.pre_load_dragons.append(Dragon(self.app))
-        for i in range(20):
-            self.pre_load_dragons.append(Heart(self.app))
+        for i in range(5):
+            self.pre_load_hearts.append(Heart(self.app))
 
     def update(self):
-        if chance(0.05) == 1 and self.hearts < 3:
+        if self.pre_loading and self.app.tick % 10 == 0:
+            self.pre_load_hearts.append(Heart(self.app))
+            self.pre_load_dragons.append(Dragon(self.app))
+
+        if len(self.pre_load_dragons) <= 2:
+            self.pre_loading = True
+        elif len(self.pre_load_dragons) >= 50:
+            self.pre_loading = False
+
+        if chance(0.05) == 1:
             self.items.append(self.pre_load_hearts[0])
-            self.pre_load_hearts.pop(0)
-            self.hearts += 1
-        if chance(3) == 1 and self.dragons < 3:
+        if chance(3) == 1 and not self.pre_loading:
             self.items.append(self.pre_load_dragons[0])
             self.pre_load_dragons.pop(0)
-            self.dragons += 1
         for i in self.items:
             i.update()
             if i.pos[0] < 0 or i.pos[0] > self.app.width or i.pos[1] < 0 or i.pos[1] > self.app.height:

@@ -29,4 +29,3 @@ class Heart:
 
     def delete(self):
         self.world.remove(self)
-        self.world.hearts -= 1

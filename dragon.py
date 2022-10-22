@@ -28,7 +28,6 @@ class Dragon:
             self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 5)
         if self.hp <= 0:
             self.world.remove(self)
-            self.world.dragons -= 1
 
     def draw(self):
         self.animation.draw(*self.pos)
