@@ -11,14 +11,24 @@ class World:
         self.dragons = 0
         self.dragon = Dragon
         self.heart = Heart
+        self.pre_load_dragons = []
+        self.pre_load_hearts = []
         self.hearts = 0
+
+    def on_ready(self):
+        for i in range(20):
+            self.pre_load_dragons.append(Dragon(self.app))
+        for i in range(20):
+            self.pre_load_dragons.append(Heart(self.app))
 
     def update(self):
         if chance(0.05) == 1 and self.hearts < 3:
-            self.add_object(Heart)
+            self.items.append(self.pre_load_hearts[0])
+            self.pre_load_hearts.pop(0)
             self.hearts += 1
         if chance(3) == 1 and self.dragons < 3:
-            self.add_object(Dragon)
+            self.items.append(self.pre_load_dragons[0])
+            self.pre_load_dragons.pop(0)
             self.dragons += 1
         for i in self.items:
             i.update()

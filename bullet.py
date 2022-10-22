@@ -48,7 +48,7 @@ class PlayerBullet:
         self.world = self.app.world
         self.size = self.animation.get_pygame_surface().get_size()
         self.hitbox = Hitbox(self.size, self.world)
-        self.damage = damage
+        self.damage = damage * 8 if self.temp_settings.cheats else 0
 
     def update(self):
         self.pos[0] += self.speed * self.dx

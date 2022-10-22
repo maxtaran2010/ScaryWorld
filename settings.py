@@ -6,4 +6,4 @@ class Settings:
 class TempSettings:
     def __init__(self):
         self.show_hitboxes = True
-        self.cheats = False
+        self.cheats = True

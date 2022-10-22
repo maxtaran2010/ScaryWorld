@@ -19,12 +19,12 @@ class Player:
         self.shot_timeout = 0
         self.speed = 3
         self.max_cartridges = 10
-        self.recharge_delay = 7
         self.world = self.app.world
         self.bullet_animation = PlayerAnimation(self.app).bullet
         self.hitbox = Hitbox(self.animations.staying.get_pygame_surface().get_size(), self.world)
         self.temp_settings = self.app.temp_settings
         self.size = self.animations[0].get_pygame_surface().get_size()
+        self.recharge_delay = 1 if self.temp_settings.cheats else 7
         self.cartridges = 10
         self.cartridges_bar = RechargeBar((0, 0), self.cartridges, self.max_cartridges, self.screen)
         self.recharging = False
