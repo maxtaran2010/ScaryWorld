@@ -9,6 +9,7 @@ class Dragon:
         self.app = app
         self.animation = DragonAnimation(app).main
         self.bullet_animation = DragonAnimation(app).bullet
+        self.bbullet_animation = DragonAnimation(app).bbullet
         self.size = self.animation.get_pygame_surface().get_size()
         self.pos = chances.pos(self.size, self.app.res)
         self.world = app.world
@@ -24,13 +25,15 @@ class Dragon:
     def update(self):
         self.hitbox.update(self.pos)
         self.pos = self.moving.increase()
-        if chances.chance(0.6):
-            self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 5)
+        if chances.chance(0.45):
+            self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3, False)
+        if chances.chance(0.05):
+            self.world.add_object(EnemyBullet, self, self.player.pos, self.bbullet_animation, 4, 10, True)
         if self.hp <= 0:
             self.world.remove(self)
 
     def draw(self):
         self.animation.draw(*self.pos)
 
-    def damage(self, dam):
+    def give_damage(self, dam):
         self.hp -= dam

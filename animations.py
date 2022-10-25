@@ -26,6 +26,8 @@ class Animation:
         self.delay = delay
         self.size = len(self.frames[0][0]), len(self.frames[0])
         self.playing = True
+        self.flip = (0, 0)
+        self.frame = 0
 
     def get_frame(self, number):
         assert number < self.len_frames, 'Incorrect frame number'
@@ -33,8 +35,9 @@ class Animation:
 
     def get_pygame_surface(self):
         d = self.current // self.delay
+        self.frame = d
         d = d % self.len_frames
-        surf = pygame.Surface(self.size)
+        surf = pygame.Surface(self.size, pygame.SRCALPHA)
         c = self.frames[d]
         surf = surf.convert_alpha()
         for y in range(len(c)):
@@ -44,11 +47,14 @@ class Animation:
         surf = pygame.transform.scale(surf, (surf.get_width()*self.scale, surf.get_height()*self.scale))
         if self.bg is not None:
             surf.set_colorkey(self.bg)
+        surf = pygame.transform.flip(surf, *self.flip)
         return surf
 
-    def draw(self, x, y):
+    def draw(self, x, y, rot=0):
+        surf = self.get_pygame_surface()
+        surf = pygame.transform.rotate(surf, rot)
         if not self.playing:
             self.current = 0
-        self.screen.blit(self.get_pygame_surface(), (x-(self.size[0]//2*self.scale), y-(self.size[1]//2*self.scale)))
+        self.screen.blit(surf, (x-(self.size[0]//2*self.scale), y-(self.size[1]//2*self.scale)))
         if self.playing:
             self.current += 1
