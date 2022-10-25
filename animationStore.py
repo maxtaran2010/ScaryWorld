@@ -34,3 +34,12 @@ class DragonAnimation:
 class Background:
     def __init__(self, app):
         self.default = animations.Animation('assets/background/default.gif', app, 2)
+        self.default2 = animations.Animation('assets/background/default#2.gif', app, 2)
+        self.default3 = animations.Animation('assets/background/default#3.gif', app, 2)
+        self.defaults = [self.default, self.default2, self.default3]
+
+        self.grass = animations.Animation('assets/background/grass.gif', app, 2)
+
+        self.tiles = [
+            self.grass
+        ]

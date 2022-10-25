@@ -72,7 +72,7 @@ class PlayerBullet:
             self.world.remove(self)
         if self.time <= 0:
             self.world.remove(self)
-        self.damage -= self.time // self.max_damage
+        self.damage -= self.max_damage // (self.time+1)
 
     def draw(self):
         self.animation.draw(*self.pos, self.angle)

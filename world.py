@@ -14,7 +14,7 @@ class World:
         self.pre_loading = False
 
     def on_ready(self):
-        for i in range(25):
+        for i in range(100):
             self.pre_load_dragons.append(Dragon(self.app))
 
     def count(self, types):

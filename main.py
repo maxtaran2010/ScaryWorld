@@ -8,9 +8,10 @@ import world
 
 class App:
     def __init__(self):
-        self.all_sprites = pygame.sprite.Group()
         self.res = self.width, self.height = 1216, 800
         self.screen = pygame.display.set_mode(self.res)
+        self.loading()
+        self.all_sprites = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self.FPS = 60
         self.settings = settings.Settings()
@@ -38,12 +39,14 @@ class App:
         self.all_sprites.draw(self.screen)
         pygame.display.flip()
 
-    def run(self):
+    def loading(self):
         loading = pygame.image.load('assets/loading.png')
         half_size = loading.get_size()
         loading = pygame.transform.scale(loading, (loading.get_size()[0]*2, loading.get_size()[1]*2))
         self.screen.blit(loading, (self.width//2-half_size[0], self.height//2-half_size[1]))
         pygame.display.flip()
+
+    def run(self):
         self.world.on_ready()
         while True:
             self.clock.tick(self.FPS)

@@ -68,7 +68,7 @@ class Player:
             angle = self.angles[self.direction]
             offset = 5
             speed = 20
-            damage = 10
+            damage = 2
             time = 20
             self.world.add_object(PlayerBullet, self, self.bullet_animation, speed, damage, time, angle)
             self.world.add_object(PlayerBullet, self, self.bullet_animation, speed, damage, time, angle-offset)
@@ -112,8 +112,13 @@ class Player:
         if self.recharging:
             self.cartridges_bar.draw()
         self.bar.draw()
-        self.gun.draw(*self.gun_pos)
-        self.animations[self.animation].draw(*self.pos)
+        if self.direction != 2:
+            self.gun.draw(*self.gun_pos)
+            self.animations[self.animation].draw(*self.pos)
+        else:
+            self.animations[self.animation].draw(*self.pos)
+            self.gun.draw(*self.gun_pos)
+
 
     def give_damage(self, damage):
         if not self.temp_settings.cheats:

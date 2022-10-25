@@ -28,6 +28,7 @@ class Animation:
         self.playing = True
         self.flip = (0, 0)
         self.frame = 0
+        self.real_size = self.size[0] * self.scale, self.size[1] * self.scale
 
     def get_frame(self, number):
         assert number < self.len_frames, 'Incorrect frame number'
