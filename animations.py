@@ -51,6 +51,9 @@ class Animation:
         surf = pygame.transform.flip(surf, *self.flip)
         return surf
 
+    def set_frame(self, frame):
+        self.current = frame * self.delay
+
     def draw(self, x, y, rot=0):
         surf = self.get_pygame_surface()
         surf = pygame.transform.rotate(surf, rot)

@@ -19,16 +19,24 @@ class Dragon:
         self.hp = 10
         self.player = app.player
         self.moving = chances.RandomMoving(self.pos, self.app.res, 3, self.size)
+        self.animation.playing = False
 
         # self.world.add_object(self.bullet, self, self.bullet_animation)
 
     def update(self):
         self.hitbox.update(self.pos)
         self.pos = self.moving.increase()
+        if self.animation.frame == self.animation.len_frames:
+            self.animation.playing = False
+            self.animation.set_frame(0)
+            if chances.chance(10):
+                self.world.add_object(EnemyBullet, self, self.player.pos, self.bbullet_animation, 4, 10, True)
+            else:
+                self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3, False)
+
         if chances.chance(0.45):
-            self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3, False)
-        if chances.chance(0.05):
-            self.world.add_object(EnemyBullet, self, self.player.pos, self.bbullet_animation, 4, 10, True)
+            self.animation.playing = True
+
         if self.hp <= 0:
             self.world.remove(self)
 

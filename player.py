@@ -21,10 +21,12 @@ class Player:
         self.world = self.app.world
         self.bullet_animation = PlayerAnimation(self.app).bullet
         self.hitbox = Hitbox(self.animations.up.get_pygame_surface().get_size(), self.world)
-        self.gun = PlayerAnimation(self.app).shotgun
+        self.gun_anim = PlayerAnimation(self.app).shotgun
+        self.gun = self.gun_anim
+        self.gun_recharge = PlayerAnimation(self.app).shotgun_recharge
         self.temp_settings = self.app.temp_settings
         self.size = self.animations[0].get_pygame_surface().get_size()
-        self.recharge_delay = 1 if self.temp_settings.cheats else 20
+        self.recharge_delay = 1 if self.temp_settings.cheats else 51
         self.cartridges = 7
         self.cartridges_bar = RechargeBar((0, 0), self.cartridges, self.max_cartridges, self.screen)
         self.recharging = False
@@ -38,7 +40,7 @@ class Player:
 
     def update(self):
         self.bar.update(self.hp)
-        self.pos = self.x, self.y
+        self.pos = [self.x, self.y]
         self.shot_timeout -= 1
         self.staying = True
         key = pygame.key.get_pressed()
@@ -64,11 +66,11 @@ class Player:
             self.staying = False
         if key[pygame.K_r]:
             self.recharging = True
-        if key[pygame.K_SPACE] and self.shot_timeout <= 0 < self.cartridges and not self.recharging:
+        if key[pygame.K_SPACE] and self.shot_timeout <= 0 and self.cartridges > 0 and not self.recharging:
             angle = self.angles[self.direction]
             offset = 5
             speed = 20
-            damage = 2
+            damage = 1
             time = 20
             self.world.add_object(PlayerBullet, self, self.bullet_animation, speed, damage, time, angle)
             self.world.add_object(PlayerBullet, self, self.bullet_animation, speed, damage, time, angle-offset)
@@ -78,14 +80,20 @@ class Player:
             self.cartridges -= 1
             self.shot_timeout = 60
             self.gun.playing = True
+            self.gun_recharge.playing = False
         if self.hp <= 0 and not self.temp_settings.cheats:
-            print('ended')
+            quit()
             self.hp = 20
 
         if self.cartridges <= 0:
             self.recharging = True
+            self.gun = self.gun_recharge
+            self.gun_recharge.playing = True
         if self.cartridges >= self.max_cartridges:
             self.recharging = False
+            self.gun = self.gun_anim
+            self.gun_recharge.playing = False
+            self.gun_recharge.set_frame(0)
 
         if self.recharging:
             if self.app.tick % self.recharge_delay == 0:
@@ -106,6 +114,15 @@ class Player:
             self.gun.flip = (1, 0)
             self.gun_pos[0] = self.pos[0]-offset
 
+        if self.x < self.animations[0].real_size[0]//2:
+            self.x = self.animations[0].real_size[0]//2
+        if self.x > self.app.width - self.animations[0].real_size[0]//2:
+            self.x = self.app.width - self.animations[0].real_size[0]//2
+        if self.y < self.animations[0].real_size[1]//2:
+            self.y = self.animations[0].real_size[1]//2
+        if self.y > self.app.height - self.animations[0].real_size[1]//2:
+            self.y = self.app.height - self.animations[0].real_size[1]//2
+
         self.gun_pos[1] = self.pos[1]+15
 
     def draw(self):
@@ -118,7 +135,6 @@ class Player:
         else:
             self.animations[self.animation].draw(*self.pos)
             self.gun.draw(*self.gun_pos)
-
 
     def give_damage(self, damage):
         if not self.temp_settings.cheats:
