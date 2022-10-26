@@ -34,7 +34,7 @@ class Dragon:
             else:
                 self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3, False)
 
-        if chances.chance(0.45):
+        if chances.chance(0.55):
             self.animation.playing = True
 
         if self.hp <= 0:

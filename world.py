@@ -12,10 +12,16 @@ class World:
         self.heart = Heart
         self.pre_load_dragons = []
         self.pre_loading = False
+        self.pre_loading_num = 100
+        self.app.max_loading_process += self.pre_loading_num
+        # TODO: Сделать чтобы после смерти и конца появлялось сообщение
 
     def on_ready(self):
-        for i in range(25):
+        def preload():
             self.pre_load_dragons.append(Dragon(self.app))
+            self.app.loading_process += 1
+        for i in range(100):
+            preload()
 
     def count(self, types):
         x = 0
@@ -28,9 +34,9 @@ class World:
         if self.pre_loading:
             self.pre_load_dragons.append(Dragon(self.app))
 
-        if len(self.pre_load_dragons) < 5:
+        if len(self.pre_load_dragons) < 3:
             self.pre_loading = True
-        elif len(self.pre_load_dragons) >= 50:
+        elif len(self.pre_load_dragons) >= 10:
             self.pre_loading = False
 
         if chance(0.07) == 1:

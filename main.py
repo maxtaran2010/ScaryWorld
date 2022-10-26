@@ -4,13 +4,20 @@ import settings
 import player
 from background import Background
 import world
+from threading import Thread
+
+
+pygame.font.init()
 
 
 class App:
     def __init__(self):
-        self.res = self.width, self.height = 1216, 800
+        self.res = self.width, self.height = 1216, 800-32
         self.screen = pygame.display.set_mode(self.res)
-        self.loading()
+        self.loading_process = 0
+        self.max_loading_process = 0
+        self.threads = []
+        self.threads.append(Thread(target=self.loading))
         self.all_sprites = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self.FPS = 60
@@ -22,6 +29,7 @@ class App:
         pygame.mouse.set_visible(False)
         self.background = Background(self).screen
         self.cursor = animations.Animation('assets/cursor.gif', self, 2)
+        # TODO: Сделать чтобы игра начаналась только после нажатия
 
     def update(self):
         self.tick += 1
@@ -41,13 +49,39 @@ class App:
 
     def loading(self):
         loading = pygame.image.load('assets/loading.png')
+        logo = pygame.image.load('assets/logo.png')
         half_size = loading.get_size()
-        loading = pygame.transform.scale(loading, (loading.get_size()[0]*2, loading.get_size()[1]*2))
-        self.screen.blit(loading, (self.width//2-half_size[0], self.height//2-half_size[1]))
-        pygame.display.flip()
+        logo_size = logo.get_size()
+        loading = pygame.transform.scale(loading, (half_size[0]*2, half_size[1]*2))
+        logo = pygame.transform.scale(logo, (logo_size[0]*2, logo_size[1]*2))
+        num_items = 5
+        loading_pos = self.width//2 - 200, self.height//num_items*3 - 20
+        font = pygame.font.Font('assets/pico-8.ttf', 12)
+        while self.loading_process != self.max_loading_process or self.max_loading_process == 0:
+            self.clock.tick(1)
+            if self.max_loading_process != 0:
+                value = self.loading_process * 400 // self.max_loading_process
+            else:
+                value = 0
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(loading, (self.width//2-half_size[0], self.height//num_items*2-half_size[1]))
+            self.screen.blit(logo, (self.width//2-logo_size[0], self.height//num_items-logo_size[1]))
+            render = font.render(f'{self.loading_process*100//self.max_loading_process}%', True, (255, 241, 118))
+            self.screen.blit(render, (self.width//2-render.get_width()//2, self.height//num_items*4-logo_size[1]))
+            pygame.draw.rect(self.screen, (255, 241, 118), (*loading_pos, value, 40))
+            pygame.draw.rect(self.screen, (255, 241, 118), (loading_pos[0]-10, loading_pos[1]-10, 420, 60), 5)
+            pygame.display.flip()
 
     def run(self):
-        self.world.on_ready()
+        self.threads.append(Thread(target=self.world.on_ready))
+        for t in self.threads:
+            t.start()
+
+        for t in self.threads:
+            t.join()
+
+        print(1)
+
         while True:
             self.clock.tick(self.FPS)
             [quit() for i in pygame.event.get() if i.type == pygame.QUIT]
