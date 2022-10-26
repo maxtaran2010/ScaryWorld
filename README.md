@@ -9,9 +9,10 @@
 git clone https://github.com/maxtaran2010/DangerInTheNight.git
 ```
 либо скачайте zip-файл и распакуйте его. Далее надо установить [python3](https://python.org)
-если его нету и выполнить команду в дериктории игры чтобы установить нужную библиотеку
+если его нету и выполнить команды в дериктории игры чтобы установить нужные библиотеки
 ```
 python3 -m pip install pygame
+python3 -m pip install imageio
 ```
 а чтобы запустить, запустите
 ```
