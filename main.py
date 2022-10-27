@@ -23,6 +23,7 @@ class App:
         self.threads.append(Thread(target=self.loading))
         self.clock = pygame.time.Clock()
         self.FPS = 60
+        pygame.display.set_icon(pygame.image.load('assets/icon.ico'))
         self.settings = settings.Settings()
         self.world = world.World(self)
         self.temp_settings = settings.TempSettings()
@@ -44,7 +45,7 @@ class App:
         self.screen.fill(self.settings.bg)
         self.player.update()
         self.world.update()
-        pygame.display.set_caption('FPS: '+str(round(self.clock.get_fps())))
+        pygame.display.set_caption('Scary World           FPS: '+str(round(self.clock.get_fps())))
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))
@@ -94,8 +95,6 @@ class App:
 
         for t in self.threads:
             t.join()
-
-        print(1)
 
         while True:
             self.clock.tick(self.FPS)

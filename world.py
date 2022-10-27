@@ -26,7 +26,6 @@ class World:
             self.app.loading_process += 1
         for i in range(25):
             preload()
-        print(len(self.pre_load_dragons))
 
     def count(self, types):
         x = 0

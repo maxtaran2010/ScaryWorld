@@ -96,6 +96,7 @@ class Player:
             self.gun = self.gun_anim
             self.gun_recharge.playing = False
             self.gun_recharge.set_frame(0)
+            self.gun.playing = False
 
         if self.recharging:
             if self.app.tick % self.recharge_delay == 0:
