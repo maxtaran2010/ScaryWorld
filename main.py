@@ -14,7 +14,7 @@ class App:
     def __init__(self):
         self.bars = []
         self.res = self.width, self.height = 1216, 800-32
-        self.screen = pygame.display.set_mode(self.res)
+        self.screen = pygame.display.set_mode(self.res, pygame.SCALED)
         self.loading_process = 0
         self.max_loading_process = 0
         self.ended = False
@@ -38,7 +38,6 @@ class App:
         self.lose_render = self.font.render('You lose!', True, (255, 241, 118))
         self.win_render = pygame.transform.scale(self.win_render, (self.win_render.get_width()*5, self.win_render.get_height()*5))
         self.lose_render = pygame.transform.scale(self.lose_render, (self.lose_render.get_width()*5, self.lose_render.get_height()*5))
-        # TODO: Сделать чтобы игра начаналась только после нажатия
 
     def update(self):
         self.tick += 1
@@ -75,6 +74,7 @@ class App:
         loading_pos = self.width//2 - 200, self.height//num_items*3 - 20
         while self.loading_process != self.max_loading_process or self.max_loading_process == 0:
             self.clock.tick(1)
+            [pygame.quit() for i in pygame.event.get() if i.type == pygame.QUIT]
             if self.max_loading_process != 0:
                 value = self.loading_process * 400 // self.max_loading_process
             else:
@@ -100,7 +100,7 @@ class App:
             self.clock.tick(self.FPS)
             for i in pygame.event.get():
                 if i.type == pygame.QUIT:
-                    quit()
+                    pygame.quit()
                 if i.type == pygame.KEYDOWN or i.type == pygame.MOUSEBUTTONDOWN:
                     self.playing = True
 
