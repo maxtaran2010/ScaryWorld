@@ -14,7 +14,7 @@ class World:
         self.heart = Heart
         self.pre_load_dragons = []
         self.pre_loading = False
-        self.pre_loading_num = 5
+        self.pre_loading_num = 25
         self.killed = 0
         self.app.max_loading_process += self.pre_loading_num
         self.bar = MonsterBar((self.app.width//2, 15), self.killed, self.pre_loading_num, self.app.screen, app=self.app)
@@ -24,7 +24,7 @@ class World:
         def preload():
             self.pre_load_dragons.append(Dragon(self.app))
             self.app.loading_process += 1
-        for i in range(5):
+        for i in range(25):
             preload()
         print(len(self.pre_load_dragons))
 
