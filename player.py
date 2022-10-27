@@ -13,7 +13,7 @@ class Player:
         self.animations = PlayerAnimation(self.app)
         self.hp = 20
         self.max_hp = 20
-        self.bar = HealthBar((10, 10), self.hp, self.max_hp, self.screen)
+        self.bar = HealthBar((10, self.app.height-30), self.hp, self.max_hp, self.screen)
         self.animation = 0
         self.shot_timeout = 60
         self.speed = 3
@@ -37,6 +37,7 @@ class Player:
         self.directiony = 1
         self.gun_pos = [0, 0]
         self.angles = {0: 180, 1: 90, 2: 0, 3: -90}
+        self.app.bars.append(self.bar)
 
     def update(self):
         self.bar.update(self.hp)
@@ -82,7 +83,8 @@ class Player:
             self.gun.playing = True
             self.gun_recharge.playing = False
         if self.hp <= 0 and not self.temp_settings.cheats:
-            quit()
+            self.app.ended = True
+            self.app.win = True
             self.hp = 20
 
         if self.cartridges <= 0:
@@ -128,7 +130,6 @@ class Player:
     def draw(self):
         if self.recharging:
             self.cartridges_bar.draw()
-        self.bar.draw()
         if self.direction != 2:
             self.gun.draw(*self.gun_pos)
             self.animations[self.animation].draw(*self.pos)

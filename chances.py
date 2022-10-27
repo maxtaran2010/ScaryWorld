@@ -22,14 +22,14 @@ class RandomMoving:
 
     def increase(self):
         if not (self.pos[0] < (self.size[0] + self.speed*3) or self.pos[0] > self.res[0] - self.speed*2 or self.pos[1] < (self.size[0] + self.speed*2) or self.pos[1] > self.res[1] - self.speed*3):
-            if random.randint(0, 100) == 0:
+            if random.randint(0, 200) == 0:
                 self.direction = [random.randint(-self.speed, self.speed), random.randint(-self.speed, self.speed)]
             self.pos[0] += self.direction[0]
             self.pos[1] += self.direction[1]
             return self.pos
         else:
-            d = (self.direction[0]*-5, self.direction[1]*-5)
-            self.direction = [random.randint(-self.speed, self.speed), random.randint(-self.speed, self.speed)]
+            d = (self.direction[0]*-2, self.direction[1]*-2)
+            self.direction = [self.direction[0]*(-2 if 3 < self.direction[0] < 3 else -1), self.direction[1]*(-2 if 3 < self.direction[0] < 3 else -1)]
             self.pos[0] += d[0]
             self.pos[1] += d[1]
             return self.pos

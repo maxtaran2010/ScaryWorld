@@ -38,6 +38,7 @@ class Dragon:
             self.animation.playing = True
 
         if self.hp <= 0:
+            self.world.killed += 1
             self.world.remove(self)
 
     def draw(self):

@@ -37,3 +37,18 @@ class RechargeBar(Bar):
         pygame.draw.rect(self.screen, (255, 255, 255), (self.pos[0]-line_width//2+width, self.pos[1], line_width, height))
         pygame.draw.rect(self.screen, (255, 255, 255), (self.pos[0], self.pos[1]-line_width//2+height//2, 100, line_width))
         pygame.draw.rect(self.screen, (255, 255, 255), (self.pos[0]-line_width//2+percentage, self.pos[1], line_width, height))
+
+
+class MonsterBar(Bar):
+    def __init__(self, *args, app):
+        super().__init__(*args)
+        self.app = app
+
+    def draw(self):
+        mwidth = self.app.width
+        width = self.value * mwidth // self.max_value
+        height = 30
+        pygame.draw.rect(self.screen, (48, 56, 67), (self.pos[0]-mwidth//2, self.pos[1]-height//2, mwidth, height))
+        pygame.draw.rect(self.screen, (50, 67, 48), (self.pos[0]-mwidth//2, self.pos[1]-height//2, width, height))
+        r = self.app.font.render(f'level 1       killed: {self.value}', True, (255, 255, 255))
+        self.screen.blit(r, (self.app.width//2-r.get_width()//2, 10))

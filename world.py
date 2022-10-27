@@ -1,10 +1,12 @@
 from items import *
 from dragon import *
+from bars import MonsterBar
 from chances import chance
 
 
 class World:
     def __init__(self, app):
+        self.monsters = 0
         self.items = []
         self.app = app
         self.last_index = 0
@@ -12,16 +14,19 @@ class World:
         self.heart = Heart
         self.pre_load_dragons = []
         self.pre_loading = False
-        self.pre_loading_num = 100
+        self.pre_loading_num = 25
+        self.killed = 0
         self.app.max_loading_process += self.pre_loading_num
-        # TODO: Сделать чтобы после смерти и конца появлялось сообщение
+        self.bar = MonsterBar((self.app.width//2, 15), self.killed, self.pre_loading_num, self.app.screen, app=self.app)
+        self.app.bars.append(self.bar)
 
     def on_ready(self):
         def preload():
             self.pre_load_dragons.append(Dragon(self.app))
             self.app.loading_process += 1
-        for i in range(100):
+        for i in range(25):
             preload()
+        print(len(self.pre_load_dragons))
 
     def count(self, types):
         x = 0
@@ -31,20 +36,17 @@ class World:
         return x
 
     def update(self):
-        if self.pre_loading:
-            self.pre_load_dragons.append(Dragon(self.app))
-
-        if len(self.pre_load_dragons) < 3:
-            self.pre_loading = True
-        elif len(self.pre_load_dragons) >= 10:
-            self.pre_loading = False
-
+        if self.killed >= self.pre_loading_num:
+            self.app.ended = True
+            self.app.win = True
+        self.bar.update(self.killed)
         if chance(0.07) == 1:
             self.items.append(Heart(self.app))
-        if chance(3) == 1 and not self.pre_loading:
+        if chance(3) == 1 and self.monsters < self.pre_loading_num:
             if self.count(Dragon) < 2:
-                self.items.append(self.pre_load_dragons[0])
-                self.pre_load_dragons.pop(0)
+                self.monsters += 1
+                self.items.append(self.pre_load_dragons[-1])
+                self.pre_load_dragons.pop(-1)
         for i in self.items:
             i.update()
             if i.pos[0] < 0 or i.pos[0] > self.app.width or i.pos[1] < 0 or i.pos[1] > self.app.height:

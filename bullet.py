@@ -54,7 +54,8 @@ class PlayerBullet:
         self.animation.flip = (0, 1)
 
     def update(self):
-        self.time -= 1
+        if not self.temp_settings.cheats:
+            self.time -= 1
         self.pos[0] += self.speed * self.dx
         self.pos[1] += self.speed * self.dy
         self.hitbox.update(self.pos)
@@ -72,7 +73,8 @@ class PlayerBullet:
             self.world.remove(self)
         if self.time <= 0:
             self.world.remove(self)
-        self.damage -= self.max_damage // (self.time+1)
+        if not self.temp_settings.cheats:
+            self.damage -= self.max_damage // (self.time+1)
 
     def draw(self):
         self.animation.draw(*self.pos, self.angle)
