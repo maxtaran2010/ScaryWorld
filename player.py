@@ -84,7 +84,7 @@ class Player:
             self.gun_recharge.playing = False
         if self.hp <= 0 and not self.temp_settings.cheats:
             self.app.ended = True
-            self.app.win = True
+            self.app.win = False
             self.hp = 20
 
         if self.cartridges <= 0:

@@ -9,7 +9,7 @@ def pos(size, ssize):
     size = list(size)
     size[0] = size[0] // 2
     size[1] = size[1] // 2
-    return [random.randint(size[0], ssize[0]-size[0]), random.randint(size[1], ssize[1]-size[1])]
+    return [random.randint(size[0]+50, ssize[0]-size[0]), random.randint(size[1]+50, ssize[1]-size[1])]
 
 
 class RandomMoving:
