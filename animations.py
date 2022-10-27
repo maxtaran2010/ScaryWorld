@@ -4,9 +4,12 @@ import numpy
 
 
 class Animation:
-    def __init__(self, file, app, scale_coef, bg=None, delay=5):
+    def __init__(self, file, app, scale_coef, bg=None, delay=5, pc=True):
         self.scale = scale_coef
-        self.image = imageio.get_reader(file, format='GIF-PIL')
+        if file.endswith('.gif'):
+            self.image = imageio.get_reader(file, format='GIF-PIL')
+        if file.endswith('.png'):
+            self.image = imageio.get_reader(file, format='PNG-PIL')
         self.len_frames = len(self.image)
         self.frames = []
         self.bg = bg
@@ -29,12 +32,13 @@ class Animation:
         self.flip = (0, 0)
         self.frame = 0
         self.real_size = self.size[0] * self.scale, self.size[1] * self.scale
+        self.position_center = pc
 
     def get_frame(self, number):
         assert number < self.len_frames, 'Incorrect frame number'
         return self.frames[number]
 
-    def get_pygame_surface(self):
+    def get_pygame_surface(self, filter=None):
         d = self.current // self.delay
         self.frame = d
         d = d % self.len_frames
@@ -49,16 +53,21 @@ class Animation:
         if self.bg is not None:
             surf.set_colorkey(self.bg)
         surf = pygame.transform.flip(surf, *self.flip)
+        if filter is not None:
+            surf = filter(surf)
         return surf
 
     def set_frame(self, frame):
         self.current = frame * self.delay
 
-    def draw(self, x, y, rot=0):
-        surf = self.get_pygame_surface()
+    def draw(self, x, y, rot=0, *, filter=None):
+        surf = self.get_pygame_surface(filter)
         surf = pygame.transform.rotate(surf, rot)
         if not self.playing:
             self.current = 0
-        self.screen.blit(surf, (x-(self.size[0]//2*self.scale), y-(self.size[1]//2*self.scale)))
+        if self.position_center:
+            self.screen.blit(surf, (x-(self.size[0]//2*self.scale), y-(self.size[1]//2*self.scale)))
+        else:
+            self.screen.blit(surf, (x, y))
         if self.playing:
             self.current += 1

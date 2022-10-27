@@ -13,7 +13,7 @@ class Player:
         self.animations = PlayerAnimation(self.app)
         self.hp = 20
         self.max_hp = 20
-        self.bar = HealthBar((10, self.app.height-30), self.hp, self.max_hp, self.screen)
+        self.bar = HealthBar((10, self.app.height-40), self.hp, self.max_hp, self.screen)
         self.animation = 0
         self.shot_timeout = 60
         self.speed = 3

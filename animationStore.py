@@ -52,3 +52,10 @@ class Background:
             self.grass, self.grass1, self.grass2, self.grass3,
             self.stone1, self.stone2, self.stone3
         ]
+
+
+class UI:
+    def __init__(self, app):
+        self.button_start = animations.Animation(file='assets/ui/button_start.gif', app=app, scale_coef=4, pc=False)
+        self.button_center = animations.Animation(file='assets/ui/button_center.gif', app=app, scale_coef=4, pc=False)
+        self.button_end = animations.Animation(file='assets/ui/button_end.gif', app=app, scale_coef=4, pc=False)

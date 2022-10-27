@@ -47,7 +47,7 @@ class MonsterBar(Bar):
     def draw(self):
         mwidth = self.app.width
         width = self.value * mwidth // self.max_value
-        height = 30
+        height = 50
         pygame.draw.rect(self.screen, (48, 56, 67), (self.pos[0]-mwidth//2, self.pos[1]-height//2, mwidth, height))
         pygame.draw.rect(self.screen, (50, 67, 48), (self.pos[0]-mwidth//2, self.pos[1]-height//2, width, height))
         r = self.app.font.render(f'level 1       killed: {self.value}', True, (255, 255, 255))
