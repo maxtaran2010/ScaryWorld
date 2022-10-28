@@ -90,6 +90,7 @@ class App:
             self.is_loading = False
             self.loading_process = 0
             self.threads = []
+            self.max_loading_process = 0
             self.threads.append(Thread(target=self.loading))
         pygame.display.flip()
 
