@@ -65,3 +65,4 @@ class GrootAnimation:
     def __init__(self, app):
         self.stay = animations.Animation(file='assets/groot/groot_stay.gif', app=app, scale_coef=4, pc=True, delay=7)
         self.walk = animations.Animation(file='assets/groot/groot_going.gif', app=app, scale_coef=4, delay=8)
+        self.attack = animations.Animation(file='assets/groot/groot_attack.gif', app=app, scale_coef=4, delay=8)
