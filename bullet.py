@@ -59,11 +59,11 @@ class PlayerBullet:
         self.pos[0] += self.speed * self.dx
         self.pos[1] += self.speed * self.dy
         self.hitbox.update(self.pos)
-        d = self.hitbox.hit_any(self.world.dragon)
+        d = self.hitbox.hit_any(self.world.preload.to_preload)
         if d:
             d.give_damage(self.damage)
             self.world.remove(self)
-        x = self.hitbox.hit_any(EnemyBullet)
+        x = self.hitbox.hit_any([EnemyBullet])
         if x:
             if not x.hard:
                 x.dx = self.dx

@@ -59,3 +59,9 @@ class UI:
         self.button_start = animations.Animation(file='assets/ui/button_start.gif', app=app, scale_coef=4, pc=False)
         self.button_center = animations.Animation(file='assets/ui/button_center.gif', app=app, scale_coef=4, pc=False)
         self.button_end = animations.Animation(file='assets/ui/button_end.gif', app=app, scale_coef=4, pc=False)
+
+
+class GrootAnimation:
+    def __init__(self, app):
+        self.stay = animations.Animation(file='assets/groot/groot_stay.gif', app=app, scale_coef=4, pc=True, delay=7)
+        self.walk = animations.Animation(file='assets/groot/groot_going.gif', app=app, scale_coef=4, delay=8)

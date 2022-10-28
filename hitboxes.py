@@ -22,11 +22,11 @@ class Hitbox:
         else:
             return 0
 
-    def hit_any(self, ntype):
+    def hit_any(self, ntypes):
         for item in self.world.items:
             hitbox2 = item.hitbox
 
-            if ntype == type(item):
+            if type(item) in ntypes:
                 if self.hits(hitbox2):
                     return item
         return 0
