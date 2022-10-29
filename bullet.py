@@ -14,7 +14,7 @@ class EnemyBullet:
         dx, dy = pos_to_hit[0] - self.pos[0], pos_to_hit[1] - self.pos[1]
         dist = math.hypot(dx, dy)
         self.dx, self.dy = dx / dist, dy / dist
-        self.speed = speed
+        self.speed = speed*self.app.temp_settings.hardness
         self.size = self.animation.get_pygame_surface().get_size()
         self.damage = damage
         self.world = self.app.world
@@ -49,7 +49,7 @@ class PlayerBullet:
         self.world = self.app.world
         self.size = self.animation.get_pygame_surface().get_size()
         self.hitbox = Hitbox(self.size, self.world)
-        self.damage = 100 if self.temp_settings.cheats else damage
+        self.damage = 100 if self.temp_settings.cheats else damage//self.app.temp_settings.hardness
         self.time = time
         self.animation.flip = (0, 1)
 

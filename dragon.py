@@ -16,9 +16,9 @@ class Dragon:
         self.hitbox = Hitbox(self.size, self.world)
         self.temp_settings = app.temp_settings
         self.screen = app.screen
-        self.hp = 10
+        self.hp = 10*self.app.temp_settings.hardness
         self.player = app.player
-        self.moving = chances.RandomMoving(self.pos, self.app.res, 2, self.size)
+        self.moving = chances.RandomMoving(self.pos, self.app.res, 2*self.app.temp_settings.hardness, self.size)
         self.animation.playing = False
 
     def update(self):
@@ -28,11 +28,11 @@ class Dragon:
             self.animation.playing = False
             self.animation.set_frame(0)
             if chances.chance(10):
-                self.world.add_object(EnemyBullet, self, self.player.pos, self.bbullet_animation, 4, 10, True)
+                self.world.add_object(EnemyBullet, self, self.player.pos, self.bbullet_animation, 4, 10*self.app.temp_settings.hardness, True)
             else:
-                self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3, False)
+                self.world.add_object(EnemyBullet, self, self.player.pos, self.bullet_animation, 6, 3*self.app.temp_settings.hardness, False)
 
-        if chances.chance(0.3):
+        if chances.chance(0.5*self.app.temp_settings.hardness):
             self.animation.playing = True
 
         if self.hp <= 0:

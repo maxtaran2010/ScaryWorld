@@ -22,6 +22,7 @@ class World:
 
     def on_ready(self):
         self.preload.preload()
+        self.app.need_to_load = False
 
     def countall(self, types):
         x = 0
@@ -38,7 +39,7 @@ class World:
         self.bar.update(self.killed)
         if chance(0.07) == 1:
             self.items.append(Heart(self.app))
-        if chance(1) == 1 and self.monsters < self.to_kill:
+        if self.monsters < self.to_kill:
             if self.current_monsters < 3:
                 self.monsters += 1
                 n = random.randint(0, len(self.preload.to_preload)-1)

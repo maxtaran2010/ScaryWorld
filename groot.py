@@ -17,6 +17,7 @@ class Groot:
         self.speed = 2.3
         self.hitbox = Hitbox(self.size, self.world)
         self.attack_timeout = 0
+        self.attack = False
 
     def update(self):
         self.attack_timeout -= 1
@@ -26,15 +27,17 @@ class Groot:
         self.pos[0] += self.speed * dx
         self.pos[1] += self.speed * dy
 
-        if dx == 0 and dy == 0:
-            self.current_animation = self.animations.stay
-        elif self.current_animation != self.animations.attack:
-            self.current_animation = self.animations.walk
+        if not self.attack:
+            if dx == 0 and dy == 0:
+                self.current_animation = self.animations.stay
+            else:
+                self.current_animation = self.animations.walk
 
         if self.hp <= 0:
             self.world.remove(self)
             self.world.killed += 1
             self.restore()
+
         self.hitbox.update(self.pos)
 
         if dx > 0:
@@ -44,15 +47,17 @@ class Groot:
             self.current_animation.flip = 1, 0
 
         if self.hitbox.hits(self.player.hitbox) and self.attack_timeout <= 0:
-            self.player.give_damage(1)
+            self.player.give_damage(1*self.app.temp_settings.hardness)
             self.attack_timeout = 100
             self.current_animation = self.animations.attack
-            self.current_animation.playing = True
             self.current_animation.set_frame(0)
+            self.current_animation.playing = True
+            self.attack = True
 
-        if self.current_animation == self.animations.attack and self.current_animation.frame == self.current_animation.len_frames - 1:
+        if self.attack and self.current_animation.frame == self.current_animation.len_frames:
             self.current_animation.playing = False
             self.current_animation = self.animations.walk
+            self.attack = False
 
     def draw(self):
         self.current_animation.draw(*self.pos)

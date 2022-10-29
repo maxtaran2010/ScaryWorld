@@ -38,7 +38,7 @@ class Animation:
         assert number < self.len_frames, 'Incorrect frame number'
         return self.frames[number]
 
-    def get_pygame_surface(self, filter=None):
+    def get_pygame_surface(self):
         d = self.current // self.delay
         self.frame = d
         d = d % self.len_frames
@@ -53,16 +53,16 @@ class Animation:
         if self.bg is not None:
             surf.set_colorkey(self.bg)
         surf = pygame.transform.flip(surf, *self.flip)
-        if filter is not None:
-            surf = filter(surf)
         return surf
 
     def set_frame(self, frame):
         self.current = frame * self.delay
+        self.frame = frame
 
-    def draw(self, x, y, rot=0, *, filter=None):
-        surf = self.get_pygame_surface(filter)
-        surf = pygame.transform.rotate(surf, rot)
+    def draw(self, x, y, rot=0):
+        surf = self.get_pygame_surface()
+        if not rot == 0:
+            surf = pygame.transform.rotate(surf, rot)
         if not self.playing:
             self.current = 0
         if self.position_center:
