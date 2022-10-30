@@ -50,5 +50,5 @@ class MonsterBar(Bar):
         height = 50
         pygame.draw.rect(self.screen, (48, 56, 67), (self.pos[0]-mwidth//2, self.pos[1]-height//2, mwidth, height))
         pygame.draw.rect(self.screen, (50, 67, 48), (self.pos[0]-mwidth//2, self.pos[1]-height//2, width, height))
-        r = self.app.font.render(f'level 1       killed: {self.value}', True, (255, 255, 255))
+        r = self.app.font.render(f'level 1       killed: {self.value}', False, (255, 255, 255))
         self.screen.blit(r, (self.app.width//2-r.get_width()//2, 10))

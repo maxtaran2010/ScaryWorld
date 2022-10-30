@@ -107,7 +107,7 @@ class Slider:
         self.ui = ui
         self.action = action
         self.value = default_value
-        self.name_render = self.ui.font.render(name, False, (181, 178, 176))
+        self.name_render = self.ui.font.render(name, False, (135, 134, 134))
         self.name_size = self.name_render.get_size()
         self.size = 300, 30 + self.name_render.get_height()
         self.pos = 0, 0
@@ -123,7 +123,7 @@ class Slider:
                          (self.rect.x, self.pos[1], self.rect.w, self.rect.h))
         pygame.draw.rect(self.ui.screen, (54, 54, 54),
                          (self.rect.x + pc - 5, self.pos[1], 10, self.rect.h))
-        text_render = self.ui.font.render(str(self.value), False, (255, 28, 28))
+        text_render = self.ui.font.render(str(round(self.value, 1)), False, (255, 28, 28))
         text_size = text_render.get_size()
         self.ui.screen.blit(text_render, (self.pos[0] + 10,
                                           self.pos[1] + self.size[1] // 2 - text_size[1] // 2))

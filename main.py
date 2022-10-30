@@ -47,7 +47,7 @@ class App:
         self.ui = ui.UI(self, self.font)
         logo = ui.Image(animations.Animation(file='assets/logogame.png', app=self, scale_coef=2, pc=False))
         self.ui.add(logo)
-        scene_settings = [logo, ui.Slider(self.ui, 1, 10, 'Difficulty', self.temp_settings.change_difficulty),
+        scene_settings = [logo, ui.Slider(self.ui, 1, 5, 'Difficulty', self.temp_settings.change_difficulty),
                           ui.Button(self.ui, 'Cheats: off', self.temp_settings.enable_cheats, tuple()),
                           ui.Button(self.ui, 'Back', lambda obj: obj.switch_scene(0), (self.ui,)),
                           ]
@@ -61,7 +61,6 @@ class App:
     def start(self):
         self.playing = True
         self.is_loading = True
-        self.threads.append(Thread(target=self.loading))
 
     def quit(self):
         self.running = False
@@ -143,6 +142,7 @@ class App:
 
             if self.is_loading:
                 if self.need_to_load:
+                    self.threads.append(Thread(target=self.loading))
                     self.threads.append(Thread(target=self.world.on_ready))
                 else:
                     self.loading_process = self.max_loading_process
