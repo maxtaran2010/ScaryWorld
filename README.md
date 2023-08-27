@@ -6,7 +6,7 @@
 
 выполните комманду, чтобы установить через Git
 ```
-git clone https://github.com/maxtaran2010/DangerInTheNight.git
+git clone https://github.com/maxtaran2010/ScaryWorld.git
 ```
 либо скачайте zip-файл и распакуйте его. Далее надо установить [python3](https://python.org)
 если его нету и выполнить команды в дериктории игры чтобы установить нужные библиотеки
